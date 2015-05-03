@@ -1,6 +1,6 @@
 
 import java.net._
-import akka.stream.scaladsl.{Source, Flow, Sink, StreamTcp}
+import akka.stream.scaladsl.{Source, Flow, Sink, Tcp=>StreamTcp}
 import StreamTcp.{ServerBinding, IncomingConnection}
 import akka.stream.stage.{StatefulStage, PushStage, Context, Directive}
 import scala.concurrent._
@@ -21,8 +21,7 @@ object ClientApp extends App{
 
   println("client daemon running")
 
-  val localhost = new InetSocketAddress("127.0.0.1", 8888)
-  val connections: Source[IncomingConnection, Future[ServerBinding]] = StreamTcp().bind(localhost)
+  val connections: Source[IncomingConnection, Future[ServerBinding]] = StreamTcp().bind("127.0.0.1", 8888)
 
   //start watchdog for test
   sys.scheduler.scheduleOnce(45 seconds) {
